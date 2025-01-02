@@ -1,0 +1,5 @@
+name: SuicideVest
+author: Frostwolf74
+version: '1.0-SNAPSHOT'
+main: me.frostwolf74.suicideVest.SuicideVest
+api-version: '1.20'
