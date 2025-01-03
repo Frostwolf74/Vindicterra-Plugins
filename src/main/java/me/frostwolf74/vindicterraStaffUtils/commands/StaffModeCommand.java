@@ -1,9 +1,11 @@
 package me.frostwolf74.vindicterraStaffUtils.commands;
 
 import me.frostwolf74.vindicterraStaffUtils.VindicterraStaffUtils;
+import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -14,12 +16,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
+import org.json.simple.ItemList;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
+
 
 public class StaffModeCommand implements CommandExecutor {
     @Override
@@ -36,52 +40,45 @@ public class StaffModeCommand implements CommandExecutor {
                 p.getPersistentDataContainer().set(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "inStaffMode"), PersistentDataType.BOOLEAN, false);
 
                 p.getInventory().clear();
-                ItemStack[] inventory = new ItemStack[41];
+                ItemStack[] items = new ItemStack[41];
 
-                for(int index : config.getIntegerList("savedInventory." + p.getUniqueId() + ".PlayerInventory.ItemStack.")){
-                    p.getServer().getLogger().info(String.valueOf(index));
-                    inventory[index] = config.getItemStack("savedInventory." + p.getUniqueId() + ".PlayerInventory.ItemStack." +  index);
+                List<ItemStack> itemList = (List<ItemStack>) config.getList("savedInventory." + p.getUniqueId() + ".PlayerInventory.ItemStack");
+
+                int i = 0;
+                for(ItemStack item : itemList) {
+                    items[i++] = item;
                 }
 
-                p.getServer().getLogger().info(Arrays.toString(inventory)); // TODO debug message
-                p.getInventory().setContents(inventory);
+                p.getServer().getLogger().info(Arrays.toString(items)); // TODO debug message
+                p.getInventory().setContents(items);
+
+                p.setGameMode(GameMode.SURVIVAL);
             }
             else{ // if player is not in staff mode
                 PlayerInventory savedInventory = p.getInventory();
-                int i = 0;
+                List<ItemStack> items = new ArrayList<>();
 
-                for(ItemStack item : savedInventory.getContents()){
-                    config.set("savedInventory." + p.getUniqueId() + ".PlayerInventory.ItemStack." +  i, item);
-                    ++i;
+                for(ItemStack e : savedInventory.getContents()){
+                    if(e == null){
+                        items.add(new ItemStack(Material.AIR));
+                    }
+                    else{
+                        items.add(e);
+                    }
                 }
+
+                config.set("savedInventory." + p.getUniqueId() + ".PlayerInventory.ItemStack", items);
                 VindicterraStaffUtils.getPlugin().saveConfig();
 
-                // create staff tools
-
-                ItemStack freezeTool = new ItemStack(Material.ICE);
-                freezeTool.setItemMeta(applyDisplayName(freezeTool, Component.text("Freeze", TextColor.color(255,215,0), TextDecoration.BOLD)));
-
-                ItemStack invSeeTool = new ItemStack(Material.CHEST);
-                invSeeTool.setItemMeta(applyDisplayName(invSeeTool, Component.text("See Inventory", TextColor.color(255,215,0), TextDecoration.BOLD)));
-
-                ItemStack rtpTool = new ItemStack(Material.ENDER_PEARL);
-                rtpTool.setItemMeta(applyDisplayName(rtpTool, Component.text("Random Teleport", TextColor.color(255,215,0), TextDecoration.BOLD)));
-
-                ItemStack nvTool = new ItemStack(Material.POTION);
-                nvTool.setItemMeta(applyDisplayName(nvTool, Component.text("Night Vision", TextColor.color(255,215,0), TextDecoration.BOLD)));
-
-                ItemStack vanishTool = new ItemStack(Material.ENDER_EYE);
-                vanishTool.setItemMeta(applyDisplayName(vanishTool, Component.text("Vanish", TextColor.color(255,215,0), TextDecoration.BOLD)));
-
-                ItemStack onlinePlayersTool = new ItemStack(Material.PLAYER_HEAD);
-                onlinePlayersTool.setItemMeta(applyDisplayName(onlinePlayersTool, Component.text("View Online Players", TextColor.color(255,215,0), TextDecoration.BOLD)));
+                p.getInventory().clear();
 
                 // swap out player's inventory with the staff mode inventory
 
-                p.getInventory().clear();
-                p.getInventory().addItem(freezeTool, invSeeTool, rtpTool, nvTool, vanishTool, onlinePlayersTool);
+                p.getInventory().setContents(getStaffInventory(p).getContents());
 
                 p.getPersistentDataContainer().set(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "inStaffMode"), PersistentDataType.BOOLEAN, true);
+
+                p.setGameMode(GameMode.CREATIVE);
             }
             return true;
         }
@@ -92,9 +89,41 @@ public class StaffModeCommand implements CommandExecutor {
         ItemMeta meta = item.getItemMeta();
 
         meta.displayName(name);
+        meta.getPersistentDataContainer().set(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "isStaffUtilityItem"), PersistentDataType.BOOLEAN, true);
         item.setItemMeta(meta);
 
         return meta;
+    }
+
+    public static PlayerInventory getStaffInventory(Player p){
+        PlayerInventory staffInventory = p.getInventory();
+
+        ItemStack freezeTool = new ItemStack(Material.ICE);
+        freezeTool.setItemMeta(applyDisplayName(freezeTool, Component.text("Freeze", TextColor.color(255,215,0), TextDecoration.BOLD)));
+
+        ItemStack invSeeTool = new ItemStack(Material.CHEST);
+        invSeeTool.setItemMeta(applyDisplayName(invSeeTool, Component.text("See Inventory", TextColor.color(255,215,0), TextDecoration.BOLD)));
+
+        ItemStack rtpTool = new ItemStack(Material.ENDER_PEARL);
+        rtpTool.setItemMeta(applyDisplayName(rtpTool, Component.text("Random Teleport", TextColor.color(255,215,0), TextDecoration.BOLD)));
+
+        ItemStack nvTool = new ItemStack(Material.POTION);
+        nvTool.setItemMeta(applyDisplayName(nvTool, Component.text("Night Vision", TextColor.color(255,215,0), TextDecoration.BOLD)));
+
+        ItemStack vanishTool = new ItemStack(Material.ENDER_EYE);
+        vanishTool.setItemMeta(applyDisplayName(vanishTool, Component.text("Vanish", TextColor.color(255,215,0), TextDecoration.BOLD)));
+
+        ItemStack onlinePlayersTool = new ItemStack(Material.PLAYER_HEAD);
+        onlinePlayersTool.setItemMeta(applyDisplayName(onlinePlayersTool, Component.text("View Online Players", TextColor.color(255,215,0), TextDecoration.BOLD)));
+
+        staffInventory.setItem(0, nvTool);
+        staffInventory.setItem(1, freezeTool);
+        staffInventory.setItem(3, rtpTool);
+        staffInventory.setItem(4, vanishTool);
+        staffInventory.setItem(7, invSeeTool);
+        staffInventory.setItem(8, onlinePlayersTool);
+
+        return staffInventory;
     }
 }
 
