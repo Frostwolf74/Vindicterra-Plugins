@@ -22,6 +22,7 @@ public class ItemInteractionEvent implements Listener {
                 return;
             }
 
+            // staff items
             if(Boolean.TRUE.equals(p.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "isStaffUtilityItem"), PersistentDataType.BOOLEAN))){
                 p.sendMessage("effect applied");
                 PotionEffect invisPot = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);

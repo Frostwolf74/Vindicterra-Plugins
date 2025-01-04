@@ -42,14 +42,13 @@ public class StaffModeCommand implements CommandExecutor {
                 p.getInventory().clear();
                 ItemStack[] items = new ItemStack[41];
 
-                List<ItemStack> itemList = (List<ItemStack>) config.getList("savedInventory." + p.getUniqueId() + ".PlayerInventory.ItemStack");
+                List<ItemStack> itemList = (List<ItemStack>) config.getList("savedInventory." + p.getUniqueId() + ".PlayerInventory.ItemStack"); // literally cannot ever be null
 
                 int i = 0;
                 for(ItemStack item : itemList) {
                     items[i++] = item;
                 }
 
-                p.getServer().getLogger().info(Arrays.toString(items)); // TODO debug message
                 p.getInventory().setContents(items);
 
                 p.setGameMode(GameMode.SURVIVAL);
