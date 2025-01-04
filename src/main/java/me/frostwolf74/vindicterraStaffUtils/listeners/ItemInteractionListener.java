@@ -1,6 +1,7 @@
 package me.frostwolf74.vindicterraStaffUtils.listeners;
 
 import me.frostwolf74.vindicterraStaffUtils.VindicterraStaffUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +14,10 @@ import org.bukkit.potion.PotionEffectType;
 public class ItemInteractionListener implements Listener {
     @EventHandler
     public void onItemInteraction(PlayerInteractEvent e) {
-        e.getPlayer().sendMessage("player item interaction event recorded");
+        VindicterraStaffUtils.getPlugin().getServer().getLogger().info("player item interaction event recorded");
+        VindicterraStaffUtils.getPlugin().getServer().sendMessage(Component.text("player item interaction event recorded"));
+
+        e.getPlayer().sendMessage("");
         if(!(e.getAction().isRightClick())) return;
 
         if(e.getItem().getItemMeta() == null){
