@@ -30,10 +30,18 @@ public class ItemInteractionListener implements Listener {
 
         // staff items
         if(Boolean.TRUE.equals(e.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "isStaffUtilityItem"), PersistentDataType.BOOLEAN))){
+            if(Objects.equals(e.getItem(), new ItemStack(Material.POTION))){
+                e.getPlayer().sendMessage("nv interaction: 1"); // TODO debug message
+            }
+            if(Objects.equals(e.getPlayer().getInventory().getItem(e.getHand()), new ItemStack(Material.POTION))){
+                e.getPlayer().sendMessage("nv interaction: 2"); // TODO debug message
+            }
             if(Objects.equals(e.getPlayer().getInventory().getItemInMainHand(), new ItemStack(Material.POTION))){
                 VanishCommand.vanishPlayer(e.getPlayer());
+                e.getPlayer().sendMessage("nv interaction: 3"); // TODO debug message
             }
             else if(Objects.equals(e.getPlayer().getInventory().getItemInMainHand(), new ItemStack(Material.ICE))){
+                e.getPlayer().sendMessage("freeze interaction"); // TODO debug message
                 if(e.getInteractionPoint() == null){
                     return;
                 }
@@ -44,6 +52,7 @@ public class ItemInteractionListener implements Listener {
                 }
             }
             else if(Objects.equals(e.getPlayer().getInventory().getItemInMainHand(), new ItemStack(Material.ENDER_PEARL))){
+                e.getPlayer().sendMessage("rtp interaction"); // TODO debug message
                 Collection<?> onlinePlayers = e.getPlayer().getServer().getOnlinePlayers();
                 Random rand = new Random();
 
