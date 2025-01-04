@@ -30,10 +30,10 @@ public class ItemInteractionListener implements Listener {
 
         // staff items
         if(Boolean.TRUE.equals(e.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "isStaffUtilityItem"), PersistentDataType.BOOLEAN))){
-            if(Objects.equals(e.getItem(), new ItemStack(Material.POTION))){
+            if(Objects.equals(e.getPlayer().getInventory().getItemInMainHand(), new ItemStack(Material.POTION))){
                 VanishCommand.vanishPlayer(e.getPlayer());
             }
-            else if(Objects.equals(e.getItem(), new ItemStack(Material.ICE))){
+            else if(Objects.equals(e.getPlayer().getInventory().getItemInMainHand(), new ItemStack(Material.ICE))){
                 if(e.getInteractionPoint() == null){
                     return;
                 }
@@ -43,7 +43,7 @@ public class ItemInteractionListener implements Listener {
                     FreezeCommand.freezePlayer(p);
                 }
             }
-            else if(Objects.equals(e.getItem(), new ItemStack(Material.ENDER_PEARL))){
+            else if(Objects.equals(e.getPlayer().getInventory().getItemInMainHand(), new ItemStack(Material.ENDER_PEARL))){
                 Collection<?> onlinePlayers = e.getPlayer().getServer().getOnlinePlayers();
                 Random rand = new Random();
 
