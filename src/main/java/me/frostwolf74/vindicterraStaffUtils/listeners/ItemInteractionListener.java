@@ -43,7 +43,7 @@ public class ItemInteractionListener implements Listener {
                     return;
                 }
 
-                RayTraceResult trace = new RayTraceResult(e.getInteractionPoint().toVector());
+                RayTraceResult trace = new RayTraceResult(e.getClickedPosition());
                 if(trace.getHitEntity() instanceof Player p){
                     FreezeCommand.freezePlayer(p);
                 }
