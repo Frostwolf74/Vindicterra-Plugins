@@ -47,6 +47,7 @@ public class ItemInteractionListener implements Listener {
                 Collection<?> onlinePlayers = e.getPlayer().getServer().getOnlinePlayers();
                 Random rand = new Random();
 
+                e.getPlayer().sendMessage(String.valueOf(rand.nextInt(onlinePlayers.size())));
                 e.getPlayer().teleport((Player) onlinePlayers.toArray()[rand.nextInt(onlinePlayers.size())]);
             }
 
