@@ -1,5 +1,7 @@
 package me.frostwolf74.vindicterraStaffUtils.commands;
 
+import me.frostwolf74.vindicterraStaffUtils.VindicterraStaffUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,6 +21,6 @@ public class FreezeCommand implements CommandExecutor {
     }
 
     public static void freezePlayer(Player p){
-
+        // TODO add functionality
     }
 }

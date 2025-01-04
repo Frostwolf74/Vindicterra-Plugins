@@ -17,7 +17,8 @@ public class MenuClickEventListener implements Listener {
             if(e.getView().title().equals("Online Players")){
                 switch(e.getCurrentItem().getType()){
                     case PLAYER_HEAD:
-                        // TODO open online players interface
+                        p.sendMessage("menu click event recorded");
+                        // TODO add functionality
                 }
             }
 
@@ -25,6 +26,7 @@ public class MenuClickEventListener implements Listener {
             if(Boolean.TRUE.equals(p.getPersistentDataContainer().get(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "inStaffMode"), PersistentDataType.BOOLEAN))){
                 e.setCancelled(true);
                 p.setItemOnCursor(new ItemStack(Material.AIR));
+                p.updateInventory();
             }
         }
     }

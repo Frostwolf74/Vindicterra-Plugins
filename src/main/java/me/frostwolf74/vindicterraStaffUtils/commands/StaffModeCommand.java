@@ -83,7 +83,6 @@ public class StaffModeCommand implements CommandExecutor {
         ItemMeta meta = item.getItemMeta();
 
         meta.displayName(name);
-        meta.getPersistentDataContainer().set(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "isStaffUtilityItem"), PersistentDataType.BOOLEAN, true);
         item.setItemMeta(meta);
 
         return meta;
