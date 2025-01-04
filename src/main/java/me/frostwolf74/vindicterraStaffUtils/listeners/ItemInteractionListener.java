@@ -4,6 +4,7 @@ import me.frostwolf74.vindicterraStaffUtils.VindicterraStaffUtils;
 import me.frostwolf74.vindicterraStaffUtils.commands.FreezeCommand;
 import me.frostwolf74.vindicterraStaffUtils.commands.VanishCommand;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -14,7 +15,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.RayTraceResult;
 
+import java.util.Collection;
 import java.util.Objects;
+import java.util.Random;
 
 public class ItemInteractionListener implements Listener {
     @EventHandler
@@ -41,7 +44,10 @@ public class ItemInteractionListener implements Listener {
                 }
             }
             else if(Objects.equals(e.getItem(), new ItemStack(Material.ENDER_PEARL))){
+                Collection<?> onlinePlayers = e.getPlayer().getServer().getOnlinePlayers();
+                Random rand = new Random();
 
+                e.getPlayer().teleport((Player) onlinePlayers.toArray()[rand.nextInt(onlinePlayers.size())]);
             }
 
             e.setCancelled(true); // prevent player from using the item
