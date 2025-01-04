@@ -10,9 +10,9 @@ public class InventorySeeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if(commandSender instanceof Player p){
-            if(p.hasPermission("VSU.inventorysee")){
+            if(!(p.hasPermission("VSU.inventorysee"))) return true;
 
-            }
+
         }
         return false;
     }

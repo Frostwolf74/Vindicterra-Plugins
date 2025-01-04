@@ -1,15 +1,20 @@
 package me.frostwolf74.vindicterraStaffUtils.listeners;
 
 import me.frostwolf74.vindicterraStaffUtils.VindicterraStaffUtils;
-import net.kyori.adventure.text.Component;
+import me.frostwolf74.vindicterraStaffUtils.commands.FreezeCommand;
+import me.frostwolf74.vindicterraStaffUtils.commands.VanishCommand;
+
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.RayTraceResult;
+
+import java.util.Objects;
 
 public class ItemInteractionListener implements Listener {
     @EventHandler
@@ -22,10 +27,27 @@ public class ItemInteractionListener implements Listener {
 
         // staff items
         if(Boolean.TRUE.equals(e.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "isStaffUtilityItem"), PersistentDataType.BOOLEAN))){
-            e.getPlayer().sendMessage("effect applied");
-            PotionEffect invisPot = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
-            e.getPlayer().addPotionEffect(invisPot);
+            if(Objects.equals(e.getItem(), new ItemStack(Material.POTION))){
+                VanishCommand.vanishPlayer(e.getPlayer());
+            }
+            else if(Objects.equals(e.getItem(), new ItemStack(Material.ICE))){
+                if(e.getInteractionPoint() == null){
+                    return;
+                }
+
+                RayTraceResult trace = new RayTraceResult(e.getInteractionPoint().toVector());
+                if(trace.getHitEntity() instanceof Player p){
+                    FreezeCommand.freezePlayer(p);
+                }
+            }
+            else if(Objects.equals(e.getItem(), new ItemStack(Material.ENDER_PEARL))){
+
+            }
+
+            e.setCancelled(true); // prevent player from using the item
         }
+
+
 
     }
 }

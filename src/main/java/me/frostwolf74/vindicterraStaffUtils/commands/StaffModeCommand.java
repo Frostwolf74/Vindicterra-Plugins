@@ -1,7 +1,6 @@
 package me.frostwolf74.vindicterraStaffUtils.commands;
 
 import me.frostwolf74.vindicterraStaffUtils.VindicterraStaffUtils;
-import net.kyori.adventure.inventory.Book;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -16,11 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Unmodifiable;
-import org.json.simple.ItemList;
 
 import java.util.*;
 
@@ -29,9 +25,7 @@ public class StaffModeCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if(commandSender instanceof Player p){
-            if (!(p.hasPermission("VSU.staff"))) {
-                return false;
-            }
+            if(!(p.hasPermission("VSU.staff"))) return true;
 
             FileConfiguration config = VindicterraStaffUtils.getPlugin().getConfig();
 
@@ -42,7 +36,8 @@ public class StaffModeCommand implements CommandExecutor {
                 p.getInventory().clear();
                 ItemStack[] items = new ItemStack[41];
 
-                List<ItemStack> itemList = (List<ItemStack>) config.getList("savedInventory." + p.getUniqueId() + ".PlayerInventory.ItemStack"); // literally cannot ever be null
+                // literally cannot ever be null
+                List<ItemStack> itemList = (List<ItemStack>) config.getList("savedInventory." + p.getUniqueId() + ".PlayerInventory.ItemStack");
 
                 int i = 0;
                 for(ItemStack item : itemList) {
