@@ -3,6 +3,7 @@ package me.frostwolf74.vindicterraStaffUtils;
 import me.frostwolf74.vindicterraStaffUtils.commands.*;
 import me.frostwolf74.vindicterraStaffUtils.listeners.ItemDropListener;
 import me.frostwolf74.vindicterraStaffUtils.listeners.ItemInteractionEvent;
+import me.frostwolf74.vindicterraStaffUtils.listeners.ItemPickUpListener;
 import me.frostwolf74.vindicterraStaffUtils.listeners.MenuClickEventListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,6 +23,7 @@ public final class VindicterraStaffUtils extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ItemInteractionEvent(), this);
         getServer().getPluginManager().registerEvents(new MenuClickEventListener(), this);
         getServer().getPluginManager().registerEvents(new ItemDropListener(), this);
+        getServer().getPluginManager().registerEvents(new ItemPickUpListener(), this);
     }
 
     public static VindicterraStaffUtils getPlugin() {
