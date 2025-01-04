@@ -14,18 +14,14 @@ import org.bukkit.potion.PotionEffectType;
 public class ItemInteractionListener implements Listener {
     @EventHandler
     public void onItemInteraction(PlayerInteractEvent e) {
-        VindicterraStaffUtils.getPlugin().getServer().getLogger().info("player item interaction event recorded");
-        VindicterraStaffUtils.getPlugin().getServer().sendMessage(Component.text("player item interaction event recorded"));
-
-        e.getPlayer().sendMessage("");
         if(!(e.getAction().isRightClick())) return;
 
-        if(e.getItem().getItemMeta() == null){
+        if(e.getItem() == null){
             return;
         }
 
         // staff items
-        if(Boolean.TRUE.equals(e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "isStaffUtilityItem"), PersistentDataType.BOOLEAN))){
+        if(Boolean.TRUE.equals(e.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "isStaffUtilityItem"), PersistentDataType.BOOLEAN))){
             e.getPlayer().sendMessage("effect applied");
             PotionEffect invisPot = new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, false, false);
             e.getPlayer().addPotionEffect(invisPot);
