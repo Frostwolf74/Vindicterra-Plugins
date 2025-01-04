@@ -16,23 +16,7 @@ import javax.naming.Name;
 public class ItemPickUpListener implements Listener {
     @EventHandler
     public void onItemPickUpEvent(PlayerAttemptPickupItemEvent e){
-        e.getPlayer().sendMessage("pick up event recorded: 1");
-        if(Boolean.TRUE.equals(e.getPlayer().getPersistentDataContainer().get(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "inStaffMode"), PersistentDataType.BOOLEAN))){
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onItemPickUpEvent2(PlayerPickItemEvent e){
-        e.getPlayer().sendMessage("pick up event recorded: 2");
-        if(Boolean.TRUE.equals(e.getPlayer().getPersistentDataContainer().get(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "inStaffMode"), PersistentDataType.BOOLEAN))){
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onItemPickUpEvent3(PlayerPickupItemEvent e){
-        e.getPlayer().sendMessage("pick up event recorded: 3");
+        // prevent players in staff mode from picking up items
         if(Boolean.TRUE.equals(e.getPlayer().getPersistentDataContainer().get(new NamespacedKey(VindicterraStaffUtils.getPlugin(), "inStaffMode"), PersistentDataType.BOOLEAN))){
             e.setCancelled(true);
         }
