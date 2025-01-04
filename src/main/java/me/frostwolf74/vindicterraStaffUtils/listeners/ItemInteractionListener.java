@@ -1,23 +1,22 @@
 package me.frostwolf74.vindicterraStaffUtils.listeners;
 
 import me.frostwolf74.vindicterraStaffUtils.VindicterraStaffUtils;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 
-public class ItemInteractionEvent implements Listener {
+public class ItemInteractionListener implements Listener {
     @EventHandler
     public void onItemInteraction(PlayerInteractEvent e) {
         if(e instanceof Player p){
-            p.sendMessage("player interaction event recorded");
+            if(!(e.getAction().isRightClick())) return;
+
+            p.sendMessage("player item interaction event recorded");
             if(e.getItem().getItemMeta() == null){
                 return;
             }
